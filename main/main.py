@@ -118,9 +118,6 @@ EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div/
     nxt.click()
 
 
-
-    nxt = WebDriverWait(driver, 20).until(
-EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div/div/div[5]/button')))
     nxt.click()
     
 
@@ -130,9 +127,6 @@ EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div/
     answer.click()
 
 
-
-    nxt = WebDriverWait(driver, 20).until(
-EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div/div/div[5]/button')))
     nxt.click()
 
 
