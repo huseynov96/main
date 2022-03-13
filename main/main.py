@@ -1,5 +1,7 @@
+from ast import Continue, If
+from msilib.schema import Class
 from pathlib import Path
-import sys , os , random , requests , time , pyperclip, multiprocessing, pyautogui
+import sys , os , random , requests , time , pyperclip, multiprocessing, pyautogui, signal
 from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -14,9 +16,11 @@ from fake_useragent import UserAgent
 from http_request_randomizer.requests.proxy.requestProxy import RequestProxy
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from contextlib import contextmanager
 
-def main():
+while True:
 
+    
     #Fake useragent
     options = Options()
     ua = UserAgent()
@@ -28,7 +32,7 @@ def main():
     options.headless = False
 
     #Don't close the browser
-    options.add_experimental_option("detach", True)
+    options.add_experimental_option("detach", False)
 
 
     #webdriver
@@ -41,15 +45,24 @@ def main():
 
     #page-action-1
 
-    driver.get('https://app.memrise.com/bienvenue?next=%2Fhome%2F')
-   
-    dil = WebDriverWait(driver, 20).until(
-EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div[2]/div[2]/div[1]/div[1]/button')))
-    dil.click()
+    try:
 
-    seviye = WebDriverWait(driver, 20).until(
-EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div[3]/div/div[1]/div/button')))
-    seviye.click()
+        driver.get('https://app.memrise.com/bienvenue?next=%2Fhome%2F')
+    
+        dil = WebDriverWait(driver, 20).until(
+    EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div[2]/div[2]/div[1]/div[1]/button')))
+        dil.click()
+
+        seviye = WebDriverWait(driver, 20).until(
+    EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div[3]/div/div[1]/div/button')))
+        seviye.click()
+    except:
+    #pass to continue loop or error handling
+        pass
+    else:
+        pass
+    finally:
+        pass
 
     #email
 
@@ -81,69 +94,51 @@ EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div[3]/div/div[1
     my_password = generated_random_password
 
     #page-action-2
+    try:
+        email = WebDriverWait(driver, 20).until(
+    EC.presence_of_element_located((By.XPATH, '//*[@id="emailAddress"]')))
+        email.send_keys(my_mail)
 
-    email = WebDriverWait(driver, 20).until(
-EC.presence_of_element_located((By.XPATH, '//*[@id="emailAddress"]')))
-    email.send_keys(my_mail)
+        password = WebDriverWait(driver, 20).until(
+    EC.presence_of_element_located((By.XPATH, '//*[@id="password"]')))
+        password.send_keys(my_password)
+            
 
-    password = WebDriverWait(driver, 20).until(
-EC.presence_of_element_located((By.XPATH, '//*[@id="password"]')))
-    password.send_keys(my_password)
-          
+        kayitbtn = WebDriverWait(driver, 20).until(
+    EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div[2]/div[3]/div/form/div[3]/button')))
+        kayitbtn.click()
 
-    kayitbtn = WebDriverWait(driver, 20).until(
-EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div[2]/div[3]/div/form/div[3]/button')))
-    kayitbtn.click()
+        time.sleep(3)
 
-    time.sleep(4)
+        driver.get("https://app.memrise.com/aprender/learn?course_id=6165975")
 
-    pyautogui.hotkey('ctrl', 't')
+        nxt = WebDriverWait(driver, 20).until(
+    EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div/div/div[5]/button')))
+        nxt.click()
 
-    pyautogui.hotkey('ctrl', '1')
+        nxt.click()
+        
 
-    pyautogui.hotkey('ctrl', 'w')
-
-    time.sleep(1)
-
-    driver.switch_to.window(driver.window_handles[0])
-
-    time.sleep(1)
-
-    driver.get("https://app.memrise.com/aprender/learn?course_id=6165975")
-
-    time.sleep(1)
-
-    nxt = WebDriverWait(driver, 20).until(
-EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div/div/div[5]/button')))
-    nxt.click()
+        answer = WebDriverWait(driver, 20).until(
+    EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div/div/div[4]/div/div[2]/div/div[2]/div[1]/button')))
+        answer.click()
 
 
-    nxt.click()
-    
+        nxt.click()
 
 
-    answer = WebDriverWait(driver, 20).until(
-EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/div/div/div/div[4]/div/div[2]/div/div[2]/div[1]/button')))
-    answer.click()
+        xbtn2 = WebDriverWait(driver, 20).until(
+    EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/header/div/div[2]/span[2]/button')))
+        xbtn2.click()
 
+        time.sleep(2)
 
-    nxt.click()
-
-
-    xbtn2 = WebDriverWait(driver, 20).until(
-EC.element_to_be_clickable((By.XPATH, '//*[@id="__next"]/div[2]/div/div/header/div/div[2]/span[2]/button')))
-    xbtn2.click()
-
-    time.sleep(2)
-
-    driver.quit()
-
-    a = 10
-    b = 50
-
-    if b > a:
-        main()
-
-main()
-
+        driver.quit()
+    except:
+     #pass to continue loop or error handling
+        pass
+    else:
+        pass
+    finally:
+        pass
 
